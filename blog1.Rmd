@@ -48,14 +48,42 @@ popvote <- read_csv("popvote_1948-2016.csv",col_types = cols(
 
 ```{r, Graph 1}
 
-popvote %>%
-# Create new variable 
-  mutate(difference = abs (pv - pv2p)) %>%
-  ggplot(aes(x=year,y=difference)) +geom_col() +
+# Making the dataframe wider
+
+popvote_wide_df <- popvote %>%
+  select(year, party, pv2p) %>%
+  spread(party, pv2p)
+
+
+  # Creating graph 1 dataframe
+
+graph1_df <- popvote_wide_df %>%
+  
+  # Create new variable to look at vote share difference
+  
+  mutate(difference = (democrat-republican),absolute_difference =abs(democrat-republican)) %>%
+
+  
+  # Mutate to get colors for graph
+  
+  mutate(Color = ifelse(difference > 0, "blue", "red")) %>%
+  
+  # Making sure there are no duplicates, while keeping all other variables
+  
+  distinct(year, .keep_all = TRUE)
+  
+  
+  # Creating Graph 1
+
+  graph1_df %>%
+  ggplot(aes(x=year,y=absolute_difference,fill=Color)) +geom_col() +
   labs(title ="Difference in Popular Vote in Presidential Elections from 1948 to 2016",
-        subtitle="Democrats versus Republicans",
-    x="Year",y= "Difference in Popular Vote") +
-  theme(plot.title = element_text(face = "bold",size=12)) 
+        subtitle="Exploring Win Margins by Democrats and Republicans",
+    x="Election Year",y= "Percentage Difference in Popular Vote") +
+  theme(plot.title = element_text(face = "bold",size=11)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party that won the election")
+
 
   
   
