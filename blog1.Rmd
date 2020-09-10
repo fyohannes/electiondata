@@ -1,0 +1,89 @@
+---
+title: "blog1"
+author: "Feven Yohannes"
+date: "September 9, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(maps)
+library(tidyverse)
+
+```
+
+
+```{r, Downloading data}
+
+ # Readig in data 1
+
+popvote_bystander <- read_csv("popvote_bystate_1948-2016.csv",col_types = cols(
+  state = col_character(),
+  year = col_double(),
+  total = col_double(),
+  D = col_double(),
+  R = col_double(),
+  R_pv2p = col_double(),
+  D_pv2p = col_double()
+))
+
+ # Reading in data 2
+
+popvote <- read_csv("popvote_1948-2016.csv",col_types = cols(
+  year = col_double(),
+  party = col_character(),
+  winner = col_logical(),
+  candidate = col_character(),
+  pv = col_double(),
+  pv2p = col_double(),
+  incumbent = col_logical(),
+  incumbent_party = col_logical(),
+  prev_admin = col_logical()
+))
+```
+
+```{r, Graph 1}
+
+popvote %>%
+# Create new variable 
+  mutate(difference = abs (pv - pv2p)) %>%
+  ggplot(aes(x=year,y=difference)) +geom_col() +
+  labs(title ="Difference in Popular Vote in Presidential Elections from 1948 to 2016",
+        subtitle="Democrats versus Republicans",
+    x="Year",y= "Difference in Popular Vote") +
+  theme(plot.title = element_text(face = "bold",size=12)) 
+
+  
+  
+  
+
+```
+
+```{r,Graph 2}
+
+graph2 <- popvote %>%
+# Create new variable 
+  filter(incumbent_party=="TRUE") %>%
+  count(winner=TRUE) 
+
+graph3 <- popvote %>%
+# Create new variable 
+  filter(incumbent =="TRUE") %>%
+  count(winner=TRUE) 
+  
+
+
+  ggplot(aes(x=year,y=difference)) +geom_col() +
+  labs(title ="Difference in Popular Vote in Presidential Elections from 1948 to 2016",
+        subtitle="Democrats versus Republicans",
+    x="Year",y= "Difference in Popular Vote") +
+  theme(plot.title = element_text(face = "bold",size=12)) 
+
+
+
+```
+
