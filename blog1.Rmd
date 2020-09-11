@@ -9,9 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 
 library(readr)
+library(tidyr)
 library(ggplot2)
 library(dplyr)
 library(maps)
+library(cowplot)
 library(tidyverse)
 
 ```
@@ -77,41 +79,203 @@ graph1_df <- popvote_wide_df %>%
 
   graph1_df %>%
   ggplot(aes(x=year,y=absolute_difference,fill=Color)) +geom_col() +
-  labs(title ="Difference in Popular Vote in Presidential Elections from 1948 to 2016",
+  labs(title ="Difference in National Popular Vote in Presidential Elections from 1948 to 2016",
         subtitle="Exploring Win Margins by Democrats and Republicans",
-    x="Election Year",y= "Percentage Difference in Popular Vote") +
+    x="Election Year",y= "Difference in Popular Vote (%)",
+    caption= "Caption: The election of 2000 and 2016 are instances where the \n candidate won the popular vote, but lost the election") +
   theme(plot.title = element_text(face = "bold",size=11)) +
     scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
-    labs(fill = "Party that won the election")
-
-
-  
-  
+    labs(fill = "Party that Won the Popular Vote")
   
 
 ```
 
-```{r,Graph 2}
 
-graph2 <- popvote %>%
-# Create new variable 
-  filter(incumbent_party=="TRUE") %>%
-  count(winner=TRUE) 
 
-graph3 <- popvote %>%
-# Create new variable 
-  filter(incumbent =="TRUE") %>%
-  count(winner=TRUE) 
+```{r,Graphic 2}
+
+  # Arizona 
+
+Arizona <- popvote_bystander %>%
+  filter(state=="Arizona") %>%
   
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Arizona's Presidential Vote Share 1948-2016",
+    x="Election Year",y= "Percentage of Vote Share by Party") +
+  theme(axis.title.y = element_text(size=8)) +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party") +
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
+
+# Florida
+
+Florida <- popvote_bystander %>%
+  filter(state=="Florida") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Florida's Presidential Popular Vote Share 1948-2016",
+    x="Election Year",y= "Percentage of Vote Share by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
 
 
-  ggplot(aes(x=year,y=difference)) +geom_col() +
-  labs(title ="Difference in Popular Vote in Presidential Elections from 1948 to 2016",
-        subtitle="Democrats versus Republicans",
-    x="Year",y= "Difference in Popular Vote") +
-  theme(plot.title = element_text(face = "bold",size=12)) 
+# Georgia 
+
+Georgia <- popvote_bystander %>%
+  filter(state=="Georgia") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Georgia's Presidential Popular Vote Share 1948-2016",
+    x="Election Year",y= "Percentage of Vote Shares by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
+
+
+  # Michigan 
+
+Michigan <- popvote_bystander %>%
+  filter(state=="Michigan") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Michigan's Presidential Popular Vote Share 1948- 2016",
+    x="Election Year",y= "Percentage of Vote Shares by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
+
+
+  # Minnesota 
+
+Minnesota <- popvote_bystander %>%
+  filter(state=="Minnesota") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Minnnesota's Presidential Popular Vote Share 1948-2016",
+        subtitle="Exploring Win Margins by Democrats and Republicans",
+    x="Election Year",y= "Percentage of Vote Shares by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
 
 
 
+  # North Carolina 
+
+North_Carolina  <- popvote_bystander %>%
+  filter(state=="North Carolina") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="North Carolina's Presidential Popular Vote Share 1948-2016",
+    x="Election Year",y= "Percentage of Vote Shares by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8))+
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
+
+
+
+  #Pennsylvania 
+
+Pennsylvania <- popvote_bystander %>%
+  filter(state=="Pennsylvania") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Pennsylavnia's Presidental Vote Share 1948-2016",
+    x="Election Year",y= "Percentage of Vote Shares by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8))+
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
+
+
+
+  # Wisconsin 
+
+Wisconsin <- popvote_bystander %>%
+  filter(state=="Wisconsin") %>%
+  
+  # Tidying Data- prep for graph 
+  
+  gather(key = party,value = party_share,D_pv2p,R_pv2p) %>%
+  
+  # Creating ggplot
+  
+  ggplot(aes(x=year,y=party_share,fill=party)) +geom_col() +
+  labs(title ="Wisconsin's Presidential Popular Vote Share 1948-2016",
+        subtitle="Exploring Win Margins by Democrats and Republicans",
+    x="Election Year",y= "Percentage of Vote Shares by Party") +
+  theme(plot.title = element_text(face = "bold",size=8)) +
+  theme(axis.title.y = element_text(size=8)) +
+    scale_fill_manual(labels=c("Democrat", "Republican"), values = c("blue", "red")) +
+    labs(fill = "Party")+
+  theme(legend.title = element_text(color = "gray1", size = 9.5),legend.key.width = unit(0.4,"cm"),legend.key.size = unit(0.6, "cm"))
+
+
+
+plot_grid(Arizona,Florida,Georgia)
+
+plot_grid(Minnesota,Wisconsin,Michigan)
+
+plot_grid(Pennsylvania,North_Carolina)
+
+
+
+  
+  
 ```
 
