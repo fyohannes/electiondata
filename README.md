@@ -1,6 +1,6 @@
 ## Welcome to GitHub Pages
 
-Blablblablkdf
+
 
 [01.Intro](intro.md)
 
@@ -15,7 +15,26 @@ Markdown is a lightweight and easy-to-use syntax for styling your writing. It in
 ```markdown
 Syntax highlighted code block
 
-# Header 1
+# Introduction
+
+Historical data
+
+Image[PV_historical.png] 
+
+
+
+Intersting Swing States
+
+Image[PV_southern_states_historical.png]
+
+Image[PV_midwest_states_historical.png]
+
+Image[PV_coast_states_historical.png]
+
+
+
+
+
 ## Header 2
 ### Header 3
 
